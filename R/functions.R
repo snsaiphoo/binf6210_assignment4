@@ -1,6 +1,13 @@
+# Write the searched sequences to a FASTA file using base R. 
+# If seq_vector has names, they are used as FASTA headers.
+
 write_fasta <- function(seq_vector, filepath) {
   write(seq_vector, file = filepath, sep = "\n")
 }
+
+# The search_fetch function takes the term and the gene name,
+# uses the rentrez library to search for 500 matches of the species,
+# and saves them into a FASTA file.
 
 search_fetch <- function(term, gene_name) {
   
@@ -24,6 +31,10 @@ search_fetch <- function(term, gene_name) {
   write_fasta(fasta_res, outfile)
   
 }
+
+# The gene_dataframe function takes a named sequence vector and creates a
+# clean data frame by extracting species names from the sequence titles,
+# standardizing species labels, and returning a formatted table for analysis.
 
 gene_dataframe <- function(geneframe) {
   
@@ -64,6 +75,10 @@ gene_dataframe <- function(geneframe) {
   return(dfgene)
 }
 
+# The createhistograms function groups species by resistance concern,
+# calculates sequence lengths, and saves two histogram plots (high vs. low
+# resistance concern) for the given gene.
+
 createhistograms <- function(geneframe, gene_name) {
   
   geneframe$Resistance_group <- NA
@@ -102,6 +117,9 @@ createhistograms <- function(geneframe, gene_name) {
   
 }
 
+# The subset_species function takes an unequal dataset and randomly selects
+# an equal number of sequences per species, returning a balanced subset.
+
 subset_species <- function(geneframe) {
   
   table(geneframe$Species_Name)
@@ -119,6 +137,9 @@ subset_species <- function(geneframe) {
   
   return(subset_frame)
 }
+
+# The pairwise_distance function aligns the sequences, computes a pairwise
+# distance matrix, saves it as a CSV file, and returns the distance object.
 
 pairwise_distance <- function(genesubset, gene_name) {
   library(DECIPHER)
@@ -143,6 +164,9 @@ pairwise_distance <- function(genesubset, gene_name) {
   return(gene_dist)
 }
 
+# The h_clustering function performs hierarchical clustering on the distance
+# matrix and saves the resulting dendrogram as a PNG file.
+
 h_clustering <- function(dist_mat, gene_name) {
   
   hc <- hclust(dist_mat, method = "average")
@@ -160,6 +184,9 @@ h_clustering <- function(dist_mat, gene_name) {
   )
   dev.off()
 }
+
+# The compute_features_biostring function calculates basic sequence features
+# (length, GC content, and nucleotide frequencies) using Biostrings.
 
 compute_features_biostring <- function(seq_vec) {
   
@@ -189,6 +216,9 @@ compute_features_biostring <- function(seq_vec) {
     T_freq = nuc_freq[, "T"]
   )
 }
+
+# The gene_features function computes sequence features, scales them,
+# performs feature-based clustering and PCA, and saves both
 
 gene_features <- function(genesubset, gene_name, leg) {
   
@@ -235,10 +265,13 @@ gene_features <- function(genesubset, gene_name, leg) {
     xlab = "PC1", ylab = "PC2"
   )
   legend(leg, legend = levels(as.factor(features$Species)),
-         col = 1:6, pch = 19, cex = 0.8)
+         col = 1:6, pch = 19, cex = 1.2)
   dev.off()
 
 }
+
+# The silhouetteplot function computes silhouette scores for the clustering
+# results, saves the silhouette plot, and returns clustering statistics.
 
 silhouetteplot <- function(genesubset, dist, gene_name) {
   
@@ -275,6 +308,8 @@ silhouetteplot <- function(genesubset, dist, gene_name) {
   return(stats)
 }
 
+# The aligncluster function performs NMDS on the distance matrix and saves
+# a plot showing species clustering.
 
 aligncluster <- function(genesubset, dist, gene_name, leg) {
   
@@ -291,7 +326,7 @@ aligncluster <- function(genesubset, dist, gene_name, leg) {
     main = paste0("NMDS – ", gene_name, " Distances")
   )
   legend(leg, legend = levels(as.factor(genesubset$Species_Name)),
-         col = 1:6, pch = 19, cex = 0.6)
+         col = 1:6, pch = 19, cex = 1.2)
   dev.off()
   
 }

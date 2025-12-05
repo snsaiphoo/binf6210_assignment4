@@ -1,3 +1,15 @@
+### Install Required Packages ###
+#install.packages(c("rentrez", "cluster", "fpc", "vegan"))
+#BiocManager::install(c("Biostrings", "DECIPHER"))
+
+### Load Packages ###
+library(rentrez)
+library(Biostrings)
+library(DECIPHER)
+library(cluster)
+library(fpc)
+library(vegan)
+
 # Data Collection
 # These are a list of the species we will be using
 
@@ -88,11 +100,17 @@ h_clustering(ITS_dist, geneITS)
 h_clustering(ERG11_dist, geneERG11)
 
 
+## Part 7.1 NMDS for alignment-based clustering 
+
+
+aligncluster(dfITS_subset, ITS_dist, geneITS, "topright")
+aligncluster(dfERG11_subset, ERG11_dist, geneERG11, "right")
+
 ## Part 4.1: Feature Based Clustering ITS and ERG11
 
 # Feature Extraction + PCA
 
-gene_features(dfITS_subset, geneITS, "bottomright")
+gene_features(dfITS_subset, geneITS, "topright")
 gene_features(dfERG11_subset, geneERG11, "topright")
 
 
@@ -107,11 +125,6 @@ dindex_ITS$dunn
 dindex_ERG11$dunn
 
 
-## Part 7.1 NMDS for alignment-based clustering 
-
-
-aligncluster(dfITS_subset, ITS_dist, geneITS, "bottomright")
-aligncluster(dfERG11_subset, ERG11_dist, geneERG11, "topright")
 
 
 
