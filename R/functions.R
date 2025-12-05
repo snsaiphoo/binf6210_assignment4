@@ -75,7 +75,7 @@ gene_dataframe <- function(geneframe) {
   return(dfgene)
 }
 
-# The createhistograms function groups species by resistance concern,
+# The createhistograms function groups species by resistance level,
 # calculates sequence lengths, and saves two histogram plots (high vs. low
 # resistance concern) for the given gene.
 
@@ -117,8 +117,10 @@ createhistograms <- function(geneframe, gene_name) {
   
 }
 
-# The subset_species function takes an unequal dataset and randomly selects
-# an equal number of sequences per species, returning a balanced subset.
+# The subset_species function takes an unequal dataset and identifies which
+# species has the lowest number of samples. It then balances the the
+# dataset by randomly sampling the other 5 species to that number. This is
+# so there is an equal number of samples per species. 
 
 subset_species <- function(geneframe) {
   
@@ -132,6 +134,8 @@ subset_species <- function(geneframe) {
   )
   
   subset_frame <- geneframe[idx_sampled, ]
+  
+  # These are to double check that it worked correctly
   table(subset_frame$Species_Name)
   sum(is.na(subset_frame$Sequence))
   
@@ -265,7 +269,7 @@ gene_features <- function(genesubset, gene_name, leg) {
     xlab = "PC1", ylab = "PC2"
   )
   legend(leg, legend = levels(as.factor(features$Species)),
-         col = 1:6, pch = 19, cex = 1.2)
+         col = 1:6, pch = 19, cex = 0.8)
   dev.off()
 
 }
@@ -308,8 +312,7 @@ silhouetteplot <- function(genesubset, dist, gene_name) {
   return(stats)
 }
 
-# The aligncluster function performs NMDS on the distance matrix and saves
-# a plot showing species clustering.
+# The aligncluster function performs NMDS (non-metric multidimensional scaling) on the distance matrix and saves a plot showing species clustering.
 
 aligncluster <- function(genesubset, dist, gene_name, leg) {
   
@@ -326,7 +329,7 @@ aligncluster <- function(genesubset, dist, gene_name, leg) {
     main = paste0("NMDS – ", gene_name, " Distances")
   )
   legend(leg, legend = levels(as.factor(genesubset$Species_Name)),
-         col = 1:6, pch = 19, cex = 1.2)
+         col = 1:6, pch = 19, cex = 0.6)
   dev.off()
   
 }
