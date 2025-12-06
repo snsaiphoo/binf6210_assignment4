@@ -93,7 +93,7 @@ createhistograms <- function(geneframe, gene_name) {
   
   outfile1 <- paste0("../figs/", gene_name, "_high_res_hist.png")
   
-  png(outfile1, width = 800, height = 600)
+  png(outfile1, width = 800, height = 600, res = 110)
   hist(
     geneframe$Seq_Length[geneframe$Resistance_group == "High resistance concern"],
     main = paste0(gene_name, ": Sequence Lengths (High Resistance Concern)"),
@@ -105,7 +105,7 @@ createhistograms <- function(geneframe, gene_name) {
   
   outfile2 <- paste0("../figs/", gene_name, "_low_res_hist.png")
   
-  png(outfile2, width = 800, height = 600)
+  png(outfile2, width = 800, height = 600, res = 110)
   hist(
     geneframe$Seq_Length[geneframe$Resistance_group == "Lower resistance concern"],
     main = paste0(gene_name,": ITS Sequence Lengths (Lower Resistance Concern Species)"),
@@ -177,7 +177,7 @@ h_clustering <- function(dist_mat, gene_name) {
   
   outfile <- paste0("../figs/", gene_name, "_hierarchal_clustering.png")
   
-  png(outfile, width = 800, height = 600)
+  png(outfile, width = 800, height = 600, res = 110)
   
   plot(
     hc,
@@ -243,7 +243,7 @@ gene_features <- function(genesubset, gene_name, leg) {
   
   outfile <- paste0("../figs/", gene_name, "_featurebased_clustering.png")
   
-  png(outfile, width = 800, height = 600)
+  png(outfile, width = 800, height = 600, res = 110)
   
   plot(
     hc_feat,
@@ -259,7 +259,7 @@ gene_features <- function(genesubset, gene_name, leg) {
   
   outfile <- paste0("../figs/", gene_name, "_PCA_featurebasedclustering.png")
   
-  png(outfile, width = 800, height = 600)
+  png(outfile, width = 800, height = 600, res = 110)
   
   plot(
     pca$x[,1], pca$x[,2],
@@ -299,7 +299,7 @@ silhouetteplot <- function(genesubset, dist, gene_name) {
   
   outfile <- paste0("../figs/", gene_name, "_silhouette.png")
   
-  png(outfile, width = 800, height = 600)
+  png(outfile, width = 800, height = 600, res = 110)
   
   # Silhouette plot
   plot(
@@ -320,7 +320,7 @@ aligncluster <- function(genesubset, dist, gene_name, leg) {
   nmds <- metaMDS(as.matrix(dist))
   
   outfile <- paste0("../figs/", gene_name, "_NMDS.png")
-  png(outfile, width = 800, height = 600)
+  png(outfile, width = 800, height = 600, res = 110)
   
   plot(
     nmds$points,
